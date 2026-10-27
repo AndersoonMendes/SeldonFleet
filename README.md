@@ -125,6 +125,15 @@ As capturas de tela serão armazenadas no diretório `screenshots/`.
 - A interface atual apresenta os detalhes em uma janela de diálogo. O requisito de navegação para uma tela de detalhes independente ainda precisa ser concluído.
 - A justificativa textual que identifica o critério específico responsável pela classificação também precisa ser concluída.
 
+## O que eu faria em seguida
+- Aprimorar a explicabilidade da classificação: apresentar os valores de consumo, falhas ou jank que determinaram o status de cada dispositivo.
+
+- Expandir a cobertura de testes: adicionar casos para os limites das regras de classificação, dados inválidos e equivalência entre consumo em mAh e mWh.
+- Evoluir a navegação: avaliar a implementação de uma tela de detalhes independente, preservando os filtros aplicados ao retornar à lista.
+
+- Melhorar a apresentação visual: aprimorar os indicadores de status e a organização das informações técnicas.
+
+- Fortalecer a validação contínua: manter o GitHub Actions executando os testes unitários e a análise estática a cada alteração.
 ## Uso de inteligência artificial
 
 Ferramentas de inteligência artificial foram utilizadas como apoio ao desenvolvimento, incluindo auxílio na elaboração e revisão de código, testes e documentação. As alterações foram aplicadas e verificadas durante a execução do projeto.
