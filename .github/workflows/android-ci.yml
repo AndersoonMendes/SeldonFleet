@@ -1,0 +1,35 @@
+name: Android CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: Testes e análise estática
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Configurar Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Configurar Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Dar permissão ao Gradle Wrapper
+        run: chmod +x gradlew
+
+      - name: Executar análise estática Android
+        run: ./gradlew lint
+
+      - name: Executar testes unitários
+        run: ./gradlew test

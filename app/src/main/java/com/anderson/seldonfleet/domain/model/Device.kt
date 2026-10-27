@@ -11,7 +11,7 @@ data class Device(
     val batteryCapacityMah: Int?,
     val batteryLevelPct: Int,
     val screenOnMinutes: Int,
-    val energyConsumed: Double,
+    val energyConsumed: Double?,
     val energyUnit: String,
     val nominalVoltage: Double?,
     val jankFramesPct: Double,
