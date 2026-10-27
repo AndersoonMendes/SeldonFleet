@@ -4,16 +4,20 @@
 
 Classificar os dispositivos da frota em OK, ATENCAO, CRITICO ou INDETERMINADO usando métricas de consumo de bateria, falhas recentes e quadros perdidos.
 
+
 ## 2. Regra de referência
 
-A classificação seguirá os limiares da especificação:
+A classificação utiliza o consumo relativo de bateria por hora de tela ligada, a quantidade de falhas nos últimos 7 dias e a taxa de quadros perdidos (jank).
 
-- INDETERMINADO: capacidade da bateria menor ou igual a zero ou ausente, tempo de tela menor ou igual a zero ou unidade mWh sem tensão nominal.
-- CRITICO: dreno relativo maior ou igual a 12 %/h, pelo menos 3 falhas recentes ou pelo menos 15% de quadros perdidos.
-- ATENCAO: dreno relativo maior ou igual a 7 %/h, pelo menos 1 falha recente ou pelo menos 8% de quadros perdidos.
-- OK: nenhum dos critérios anteriores é atendido.
+- **INDETERMINADO:** capacidade da bateria ausente ou menor/igual a zero; tempo de tela menor/igual a zero; ou consumo ausente, negativo ou não finito. Consumos em mWh sem tensão nominal válida também não podem ser normalizados.
+- **CRÍTICO:** consumo relativo maior/igual a 12%/h, ou pelo menos 3 falhas nos últimos 7 dias, ou jank maior/igual a 15%.
+- **ATENÇÃO:** consumo relativo maior/igual a 7%/h, ou pelo menos 1 falha nos últimos 7 dias, ou jank maior/igual a 8%.
+- **OK:** nenhum dos critérios de Atenção ou Crítico é atendido.
 
-A ordem de avaliação será: INDETERMINADO, CRITICO, ATENCAO e OK.
+A ordem de avaliação será: INDETERMINADO, CRÍTICO, ATENÇÃO e OK.
+
+O consumo relativo é calculado dividindo o consumo em mAh pelo tempo de tela em horas e pela capacidade da bateria em mAh, multiplicando o resultado por 100.
+
 
 ## 3. Normalização de energia
 

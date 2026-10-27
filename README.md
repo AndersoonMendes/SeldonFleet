@@ -111,11 +111,11 @@ As capturas de tela serão armazenadas no diretório `screenshots/`.
 
 ### Lista da frota
 
-![Lista da frota](screenshots/lista/lista-todos.jpeg)
+![Lista da frota](screenshots/lista.jpeg)
 
 ### Detalhes do dispositivo
 
-![Detalhes do dispositivo](screenshots/detalhes/detalhes-A14.jpeg)
+![Detalhes do dispositivo](screenshots/detalhe-dispositivo.jpeg)
 
 ## Decisões e limitações conhecidas
 

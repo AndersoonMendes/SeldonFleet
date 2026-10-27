@@ -248,6 +248,8 @@ fun FleetScreen() {
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     Text("ID: ${device.id}")
                     Text("Status: ${statusLabel(status)}")
+                    Text("Justificativa", fontWeight = FontWeight.Bold)
+                    Text(classificationReason(device, status))
                     Text("Sistema: ${device.soc}")
                     Text("Android API: ${device.androidApi}")
                     Text("RAM: ${device.ramMb} MB")
@@ -304,12 +306,66 @@ private fun ResumoCard(
         }
     }
 }
-
 private fun statusLabel(status: DeviceStatus): String {
     return when (status) {
         DeviceStatus.OK -> "OK"
         DeviceStatus.ATENCAO -> "ATENÇÃO"
         DeviceStatus.CRITICO -> "CRÍTICO"
         DeviceStatus.INDETERMINADO -> "INDETERMINADO"
+    }
+}
+private fun classificationReason(device: Device, status: DeviceStatus): String {
+    val capacity = device.batteryCapacityMah?.toDouble()
+    val energy = device.energyConsumed
+
+    val relativeDrain = if (capacity != null && capacity > 0.0 &&
+        device.screenOnMinutes > 0 && energy != null &&
+        energy.isFinite() && energy >= 0.0){
+        val screenHours = device.screenOnMinutes / 60.0
+        (energy / screenHours / capacity) * 100.0
+    } else {
+        null
+    }
+
+    return when (status) {
+        DeviceStatus.INDETERMINADO ->
+            "Não foi possível calcular o consumo relativo. " +
+                    "Verifique a capacidade da bateria, o consumo " +
+                    "e o tempo de tela."
+
+        DeviceStatus.CRITICO -> when {
+            relativeDrain != null && relativeDrain >= 12.0 ->
+                "Consumo relativo de bateria de " +
+                        "%.1f%% por hora (limite crítico: 12%%/h)."
+                            .format(relativeDrain)
+
+            device.crashCount7d >= 3 ->
+                "Pelo menos 3 falhas registradas nos últimos 7 dias."
+
+            device.jankFramesPct >= 15.0 ->
+                "Taxa de quadros perdidos (jank) igual ou superior a 15%."
+
+            else ->
+                "Um ou mais critérios de criticidade foram atingidos."
+        }
+
+        DeviceStatus.ATENCAO -> when {
+            relativeDrain != null && relativeDrain >= 7.0 ->
+                "Consumo relativo de bateria de " +
+                        "%.1f%% por hora (limite de atenção: 7%%/h)."
+                            .format(relativeDrain)
+
+            device.crashCount7d >= 1 ->
+                "Foi registrada pelo menos 1 falha nos últimos 7 dias."
+
+            device.jankFramesPct >= 8.0 ->
+                "Taxa de quadros perdidos (jank) igual ou superior a 8%."
+
+            else ->
+                "Um critério de atenção foi atingido."
+        }
+
+        DeviceStatus.OK ->
+            "Nenhum dos limites de consumo, falhas ou jank foi atingido."
     }
 }
